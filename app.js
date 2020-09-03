@@ -64,11 +64,35 @@ app.post("/party", function (req, res) {
 
 		if (best_free_room) {
 			// SETTING THE ALONE OF BEST USER TO FALSE
-
+			var filter = { unique_id: best_free_room.unique_id };
+			var update = { alone: false };
+			user_base.findOneAndUpdate(filter, update, function (err, res) {
+				if (err) {
+					console.log("THE PERSON WHO IS NOT ALONE ANYMORE FAILED");
+				} else {
+					console.log("THE PERSON WHO IS NOT ALONE ANYMORE success");
+				}
+			});
 			// IF WE FIND SOME FREE ROOM
 			console.log("THIS IS THE BEST USER");
 			console.log(best_free_room);
 			console.log(best_free_room.room);
+			user_base.create(
+				{
+					unique_id: req.body.unique_id,
+					alone: false,
+					room: best_free_room.room,
+				},
+				function (err, user) {
+					if (err) {
+						console.log("New user NOT created");
+						console.log(err);
+					} else {
+						console.log("New user created");
+						console.log(user);
+					}
+				}
+			);
 			res.redirect(`https://meet.jit.si/${best_free_room.room}`);
 		} else {
 			// IF NO FREE ROOM IS AVAILABLE
