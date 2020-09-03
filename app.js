@@ -10,8 +10,10 @@ app.get("/", function (req, res) {
 	res.render("index.ejs");
 });
 
-app.get("/party", function (req, res) {
-	res.redirect("https://meet.jit.si/xyz");
+app.post("/party", function (req, res) {
+	// res.redirect("https://meet.jit.si/xyz");
+	console.log(req.body);
+	// res.redirect("/");
 });
 
 app.listen(process.env.PORT || 3000, function () {
