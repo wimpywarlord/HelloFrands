@@ -63,8 +63,13 @@ app.post("/party", function (req, res) {
 		// <--CODE FOR FINDING THE BEST ROOM-->
 
 		if (best_free_room) {
+			// SETTING THE ALONE OF BEST USER TO FALSE
+
 			// IF WE FIND SOME FREE ROOM
+			console.log("THIS IS THE BEST USER");
 			console.log(best_free_room);
+			console.log(best_free_room.room);
+			res.redirect(`https://meet.jit.si/${best_free_room.room}`);
 		} else {
 			// IF NO FREE ROOM IS AVAILABLE
 			const room_for_current_user = uuidv4();
@@ -88,7 +93,7 @@ app.post("/party", function (req, res) {
 		}
 	});
 
-	res.redirect("/");
+	// res.redirect("/");
 });
 
 app.listen(process.env.PORT || 3000, function () {
