@@ -81,6 +81,9 @@ app.post("/party", function (req, res) {
 			user_base.update(
 				{
 					unique_id: req.body.unique_id,
+				},
+				{
+					unique_id: req.body.unique_id,
 					alone: false,
 					room: best_free_room.room,
 				},
