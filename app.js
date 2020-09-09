@@ -54,12 +54,13 @@ app.post("/party", function (req, res) {
 
 		// <--CODE FOR FINDING THE BEST ROOM-->
 		var best_free_room;
-		list_of_all_user.forEach((element) => {
-			if (element.alone == true) {
-				best_free_room = element;
-				return false;
-			}
-		});
+		if (list_of_all_user != undefined)
+			list_of_all_user.forEach((element) => {
+				if (element.alone == true) {
+					best_free_room = element;
+					return false;
+				}
+			});
 		// <--CODE FOR FINDING THE BEST ROOM-->
 
 		if (best_free_room) {
@@ -77,11 +78,14 @@ app.post("/party", function (req, res) {
 			console.log("THIS IS THE BEST USER");
 			console.log(best_free_room);
 			console.log(best_free_room.room);
-			user_base.create(
+			user_base.update(
 				{
 					unique_id: req.body.unique_id,
 					alone: false,
 					room: best_free_room.room,
+				},
+				{
+					upsert: true,
 				},
 				function (err, user) {
 					if (err) {
@@ -98,11 +102,17 @@ app.post("/party", function (req, res) {
 			// IF NO FREE ROOM IS AVAILABLE
 			const room_for_current_user = uuidv4();
 			res.redirect(`https://meet.jit.si/${room_for_current_user}`);
-			user_base.create(
+			user_base.update(
+				{
+					unique_id: req.body.unique_id,
+				},
 				{
 					unique_id: req.body.unique_id,
 					alone: true,
 					room: room_for_current_user,
+				},
+				{
+					upsert: true,
 				},
 				function (err, user) {
 					if (err) {
