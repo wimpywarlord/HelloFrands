@@ -67,7 +67,10 @@ app.post("/party", function (req, res) {
 			// SETTING THE ALONE OF BEST USER TO FALSE
 			var filter = { unique_id: best_free_room.unique_id };
 			var update = { alone: false };
-			user_base.findOneAndUpdate(filter, update, function (err, res) {
+			await user_base.findOneAndUpdate(filter, update, function (
+				err,
+				res
+			) {
 				if (err) {
 					console.log("THE PERSON WHO IS NOT ALONE ANYMORE FAILED");
 				} else {
@@ -78,7 +81,7 @@ app.post("/party", function (req, res) {
 			console.log("THIS IS THE BEST USER");
 			console.log(best_free_room);
 			console.log(best_free_room.room);
-			user_base.update(
+			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
 				},
@@ -105,7 +108,7 @@ app.post("/party", function (req, res) {
 			// IF NO FREE ROOM IS AVAILABLE
 			const room_for_current_user = uuidv4();
 			res.redirect(`https://meet.jit.si/${room_for_current_user}`);
-			user_base.update(
+			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
 				},
