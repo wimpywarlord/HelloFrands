@@ -54,8 +54,10 @@ app.post("/party", async function (req, res) {
 		})
 		.sort(sort);
 	console.log("FETCHING COMPLETED ");
-	// <--CODE FOR FINDING THE BEST ROOM-->
 
+	// console.log(list_of_all_user);
+	// <--CODE FOR FINDING THE BEST ROOM-->
+	console.log("STARTING TO FIND BEST ROOM");
 	if (list_of_all_user != undefined)
 		list_of_all_user.forEach((element) => {
 			if (element.alone == true) {
@@ -63,11 +65,17 @@ app.post("/party", async function (req, res) {
 				return false;
 			}
 		});
+	if (!best_free_room) {
+		console.log("NO BEST USER FOUNDS");
+	} else {
+		console.log(best_free_room);
+	}
+	console.log("END OF BEST ROOM");
 
 	// <--CODE FOR FINDING THE BEST ROOM-->
 
 	if (best_free_room) {
-		console.log("THE BEST USESR IS", best_free_room);
+		// console.log("THE BEST USESR IS", best_free_room);
 		var filter = { unique_id: best_free_room.unique_id };
 		var update = { alone: false };
 		// SETTING THE ALONE OF BEST USER TO FALSE
