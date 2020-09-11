@@ -51,34 +51,34 @@ app.post("/party", function (req, res) {
 				}
 			})
 			.sort(sort);
+		console.log("FETCHING COMPLETED ");
+		// <--CODE FOR FINDING THE BEST ROOM-->
+		var best_free_room;
+		if (list_of_all_user != undefined)
+			list_of_all_user.forEach((element) => {
+				if (element.alone == true) {
+					best_free_room = element;
+					return false;
+				}
+			});
+
+		console.log("THE BEST USESR IS", best_free_room);
+		var filter = { unique_id: best_free_room.unique_id };
+		var update = { alone: false };
+		// <--CODE FOR FINDING THE BEST ROOM-->
 	});
 
 	// var finding_free_person = new Promise(async (resolve, reject) => { });
 	// var finding_free_person = new Promise(async (resolve, reject) => { });
 	// var finding_free_person = new Promise(async (resolve, reject) => { });
 
-	console.log("FETCHING COMPLETED ");
-
-	// <--CODE FOR FINDING THE BEST ROOM-->
-	var best_free_room;
-	if (list_of_all_user != undefined)
-		list_of_all_user.forEach((element) => {
-			if (element.alone == true) {
-				best_free_room = element;
-				return false;
-			}
-		});
-
-	console.log("THE BEST USESR IS", best_free_room);
-	// <--CODE FOR FINDING THE BEST ROOM-->
+	// console.log("FETCHING COMPLETED ");
 
 	if (best_free_room) {
 		// SETTING THE ALONE OF BEST USER TO FALSE
-		var filter = { unique_id: best_free_room.unique_id };
-		var update = { alone: false };
 
-		console.log("STARTING UPDATE USER WHO GOT PAIRED NOW");
 		var updating_one_person = new Promise(async (resolve, reject) => {
+			console.log("STARTING UPDATE USER WHO GOT PAIRED NOW");
 			await user_base.findOneAndUpdate(filter, update, function (
 				err,
 				res
@@ -89,13 +89,13 @@ app.post("/party", function (req, res) {
 					console.log("THE PERSON WHO IS NOT ALONE ANYMORE UPDATED");
 				}
 			});
+			console.log("ENDING UPDATE USER WHO GOT PAIRED NOW");
 		});
-		console.log("ENDING UPDATE USER WHO GOT PAIRED NOW");
 
 		// IF WE FIND SOME FREE ROOM
 
-		console.log("STARTING UPDATE OF THE REQUESTING USERS");
 		var updating_requesting_user = new Promise(async (resolve, reject) => {
+			console.log("STARTING UPDATE OF THE REQUESTING USERS");
 			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
@@ -118,16 +118,15 @@ app.post("/party", function (req, res) {
 					}
 				}
 			);
+			console.log("ENDING UPDATE OF THE REQUESTING USERS");
+			res.redirect(`https://meet.jit.si/${best_free_room.room}`);
 		});
-		console.log("ENDING UPDATE OF THE REQUESTING USERS");
-
-		res.redirect(`https://meet.jit.si/${best_free_room.room}`);
 	} else {
 		// IF NO FREE ROOM IS AVAILABLE
 		const room_for_current_user = uuidv4();
-		res.redirect(`https://meet.jit.si/${room_for_current_user}`);
-		console.log("STARTING CREATE NEW USER");
+
 		var creating_new_user = new Promise(async (resolve, reject) => {
+			console.log("STARTING CREATE NEW USER");
 			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
@@ -152,6 +151,7 @@ app.post("/party", function (req, res) {
 			);
 		});
 		console.log("ENDING CREATE NEW USER");
+		res.redirect(`https://meet.jit.si/${room_for_current_user}`);
 	}
 
 	// res.redirect("/");
