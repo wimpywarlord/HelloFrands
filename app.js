@@ -60,12 +60,12 @@ app.post("/party", function (req, res) {
 				}
 			});
 
-		console.log("THE BEST USESR IS", best_free_room);
-		var filter = { unique_id: best_free_room.unique_id };
-		var update = { alone: false };
 		// <--CODE FOR FINDING THE BEST ROOM-->
 
 		if (best_free_room) {
+			console.log("THE BEST USESR IS", best_free_room);
+			var filter = { unique_id: best_free_room.unique_id };
+			var update = { alone: false };
 			// SETTING THE ALONE OF BEST USER TO FALSE
 
 			var updating_one_person = new Promise(async (resolve, reject) => {
