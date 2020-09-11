@@ -35,7 +35,9 @@ app.get("/", function (req, res) {
 app.post("/party", function (req, res) {
 	var sort = { _id: 1 };
 	var list_of_all_user;
-	var finding_free_person = new Promise(async (resolve, reject) => {
+	console.log("FETCHING STARTED ");
+
+	var fetching_all_users = new Promise(async (resolve, reject) => {
 		await user_base
 			.find({}, function (err, all_users) {
 				if (err) {
@@ -44,29 +46,39 @@ app.post("/party", function (req, res) {
 					);
 				} else {
 					console.log("ALL USERS FETCHED");
-					console.log(all_users);
+					// console.log(all_users);
 					list_of_all_user = all_users;
 				}
 			})
 			.sort(sort);
+	});
 
-		// console.log("SHOULD PRINT AFTER USER FETCH ");
+	// var finding_free_person = new Promise(async (resolve, reject) => { });
+	// var finding_free_person = new Promise(async (resolve, reject) => { });
+	// var finding_free_person = new Promise(async (resolve, reject) => { });
 
-		// <--CODE FOR FINDING THE BEST ROOM-->
-		var best_free_room;
-		if (list_of_all_user != undefined)
-			list_of_all_user.forEach((element) => {
-				if (element.alone == true) {
-					best_free_room = element;
-					return false;
-				}
-			});
-		// <--CODE FOR FINDING THE BEST ROOM-->
+	console.log("FETCHING COMPLETED ");
 
-		if (best_free_room) {
-			// SETTING THE ALONE OF BEST USER TO FALSE
-			var filter = { unique_id: best_free_room.unique_id };
-			var update = { alone: false };
+	// <--CODE FOR FINDING THE BEST ROOM-->
+	var best_free_room;
+	if (list_of_all_user != undefined)
+		list_of_all_user.forEach((element) => {
+			if (element.alone == true) {
+				best_free_room = element;
+				return false;
+			}
+		});
+
+	console.log("THE BEST USESR IS", best_free_room);
+	// <--CODE FOR FINDING THE BEST ROOM-->
+
+	if (best_free_room) {
+		// SETTING THE ALONE OF BEST USER TO FALSE
+		var filter = { unique_id: best_free_room.unique_id };
+		var update = { alone: false };
+
+		console.log("STARTING UPDATE USER WHO GOT PAIRED NOW");
+		var updating_one_person = new Promise(async (resolve, reject) => {
 			await user_base.findOneAndUpdate(filter, update, function (
 				err,
 				res
@@ -74,13 +86,16 @@ app.post("/party", function (req, res) {
 				if (err) {
 					console.log("THE PERSON WHO IS NOT ALONE ANYMORE FAILED");
 				} else {
-					console.log("THE PERSON WHO IS NOT ALONE ANYMORE success");
+					console.log("THE PERSON WHO IS NOT ALONE ANYMORE UPDATED");
 				}
 			});
-			// IF WE FIND SOME FREE ROOM
-			console.log("THIS IS THE BEST USER");
-			console.log(best_free_room);
-			console.log(best_free_room.room);
+		});
+		console.log("ENDING UPDATE USER WHO GOT PAIRED NOW");
+
+		// IF WE FIND SOME FREE ROOM
+
+		console.log("STARTING UPDATE OF THE REQUESTING USERS");
+		var updating_requesting_user = new Promise(async (resolve, reject) => {
 			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
@@ -98,16 +113,21 @@ app.post("/party", function (req, res) {
 						console.log("New user NOT created");
 						console.log(err);
 					} else {
-						console.log("New user created");
-						console.log(user);
+						console.log("Requesting user updated or created");
+						// console.log(user);
 					}
 				}
 			);
-			res.redirect(`https://meet.jit.si/${best_free_room.room}`);
-		} else {
-			// IF NO FREE ROOM IS AVAILABLE
-			const room_for_current_user = uuidv4();
-			res.redirect(`https://meet.jit.si/${room_for_current_user}`);
+		});
+		console.log("ENDING UPDATE OF THE REQUESTING USERS");
+
+		res.redirect(`https://meet.jit.si/${best_free_room.room}`);
+	} else {
+		// IF NO FREE ROOM IS AVAILABLE
+		const room_for_current_user = uuidv4();
+		res.redirect(`https://meet.jit.si/${room_for_current_user}`);
+		console.log("STARTING CREATE NEW USER");
+		var creating_new_user = new Promise(async (resolve, reject) => {
 			await user_base.update(
 				{
 					unique_id: req.body.unique_id,
@@ -126,12 +146,13 @@ app.post("/party", function (req, res) {
 						console.log(err);
 					} else {
 						console.log("New user created");
-						console.log(user);
+						// console.log(user);
 					}
 				}
 			);
-		}
-	});
+		});
+		console.log("ENDING CREATE NEW USER");
+	}
 
 	// res.redirect("/");
 });
