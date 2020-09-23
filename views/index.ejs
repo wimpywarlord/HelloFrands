@@ -396,6 +396,7 @@ Amigos</div>
 			</div>
 			<input onclick="showDis()"  type="checkbox" required id="Fresher">
 			<label for="Fresher"  style="font-size: 10px;">I accept that I am a VIT 2020 Batch Fresher.</label>
+
 			<br>
 			<small
 				>🐬 After the meeting is finished come back to this page to go again.</small
@@ -483,17 +484,7 @@ Amigos</div>
 		Made with 💖 by VinnovateIT.
 	</div>
 	<script>
-											if (auth2.isSignedIn.get()) {
-												var profile = auth2.currentUser.get().getBasicProfile();
-												document.querySelector(".welcome").innerHTML = profile.getName();
-												document.querySelector(".welcome-img").src = profile.getImageUrl();
-												console.log('ID: ' + profile.getId());
-												console.log('Full Name: ' + profile.getName());
-												console.log('Given Name: ' + profile.getGivenName());
-												console.log('Family Name: ' + profile.getFamilyName());
-  					console.log('Image URL: ' + profile.getImageUrl());
-											console.log('Email: ' + profile.getEmail());
-				}
+
 				$(window).load(function() {
 					if (!localStorage.getItem("seenDis")) {
 						localStorage.setItem("seenDis", "False");
@@ -506,6 +497,7 @@ Amigos</div>
 					}
 					localStorage.setItem("seenDis", "True");
 				}
+
 	</script>
   </body>
 </html>
