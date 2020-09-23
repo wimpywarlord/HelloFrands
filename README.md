@@ -11,7 +11,7 @@
 
 This is an attempt to explain the very complex being I am through the language of binary. 
 
-**Link to the website** : http://wimpywarlord.codes/
+**Link to the website** : https://amigos.vinnovateit.com/
 
 ## Getting Started 🎧
 
