@@ -332,7 +332,8 @@ Amigos</div>
 			</div>
 			<div class="g-signin2" style="margin:1em 6em" data-onsuccess="onSignIn"></div>
 			<span class="welcome"></span>
-			<img src="" class="welcome-img" height="20px" alt="" srcset="">
+			<img src="" class="welcome-img" height="20px" alt="" srcset=""> 🤗🤗🤗
+			<br>
 			<small
 				>🐬 After the meeting is finished come back to this page to go again.</small
 			>
@@ -422,7 +423,7 @@ Amigos</div>
 			function onSignIn(googleUser) {
 				// Useful data for your client-side scripts:
 				var profile = googleUser.getBasicProfile();
-				document.querySelector(".welcome").innerHTML = profile.getName();
+				document.querySelector(".welcome").innerHTML = `Welcome ${profile.getName()} `;
 				document.querySelector(".welcome-img").src = profile.getImageUrl();
 				console.log("ID: " + profile.getId()); // Don't send this directly to your server!
         console.log('Full Name: ' + profile.getName());
