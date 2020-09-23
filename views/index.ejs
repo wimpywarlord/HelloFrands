@@ -279,6 +279,9 @@ section #services li span {
 }
 
   </style>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id"
+	content="1055564869970-s563ejsdo424a2vgfkkt0ab586icd6l0.apps.googleusercontent.com">
   </head>
   <body>
 	  <!-- Modal -->
@@ -324,6 +327,9 @@ Amigos</div>
 			 
 			  placeholder="Eg: 20BIT0131" required>
 			</div>
+			<div class="g-signin2" style="margin:1em 6em" data-onsuccess="onSignIn"></div>
+			<span class="welcome"></span>
+			<img src="" class="welcome-img" height="20px" alt="" srcset="">
 			<small
 				>🐬 After the meeting is finished come back to this page to go again.</small
 			>
@@ -409,5 +415,18 @@ Amigos</div>
 	<div style="margin-top: 30px; text-align: center;">
 		Made with 💖 by VinnovateIT.
 	</div>
+	<script>
+											if (auth2.isSignedIn.get()) {
+												var profile = auth2.currentUser.get().getBasicProfile();
+												document.querySelector(".welcome").innerHTML = profile.getName();
+												document.querySelector(".welcome-img").src = profile.getImageUrl();
+												console.log('ID: ' + profile.getId());
+												console.log('Full Name: ' + profile.getName());
+												console.log('Given Name: ' + profile.getGivenName());
+												console.log('Family Name: ' + profile.getFamilyName());
+  					console.log('Image URL: ' + profile.getImageUrl());
+											console.log('Email: ' + profile.getEmail());
+				}
+	</script>
   </body>
 </html>
