@@ -279,6 +279,9 @@ section #services li span {
 }
 
   </style>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id"
+	content="1055564869970-s563ejsdo424a2vgfkkt0ab586icd6l0.apps.googleusercontent.com">
   </head>
   <body>
 	  <!-- Modal -->
@@ -327,6 +330,7 @@ Amigos</div>
 			 
 			  placeholder="Eg: 19BIT0131" required>
 			</div>
+			<div class="g-signin2" style="margin:1em 6em" data-onsuccess="onSignIn"></div>
 			<small
 				>🐬 After the meeting is finished come back to this page to go again.</small
 			>
@@ -412,5 +416,14 @@ Amigos</div>
 	<div style="margin-top: 30px; text-align: center;">
 		Made with 💖 by VinnovateIT.
 	</div>
+	<script>
+		function onSignIn(googleUser) {
+			var profile = googleUser.getBasicProfile();
+			console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+			console.log('Name: ' + profile.getName());
+			console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+		}
+	</script>
   </body>
 </html>
