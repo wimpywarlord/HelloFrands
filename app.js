@@ -35,7 +35,7 @@ app.get("/", function (req, res) {
 app.post("/party", async function (req, res) {
 	var sort = { _id: 1 };
 	var list_of_all_user;
-	console.log("FETCHING STARTED ");
+	console.log("FETCHING STARTED.");
 	var best_free_room;
 
 	var list_of_all_user = await user_base
@@ -45,7 +45,7 @@ app.post("/party", async function (req, res) {
 					console.log("ALL CURRENT USER NOT FETCHED");
 					reject(err);
 				} else {
-					console.log("ALL USERS FETCHED");
+					console.log("ALL USERS FETCHED.");
 					// console.log(all_users);
 					list_of_all_user = all_users;
 					resolve(all_users);
@@ -53,7 +53,7 @@ app.post("/party", async function (req, res) {
 			});
 		})
 		.sort(sort);
-	console.log("FETCHING COMPLETED ");
+	console.log("FETCHING COMPLETED.");
 
 	// console.log(list_of_all_user);
 	// <--CODE FOR FINDING THE BEST ROOM-->
