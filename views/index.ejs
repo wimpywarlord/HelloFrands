@@ -493,12 +493,7 @@ Amigos</div>
 		Do <a id="share" role="button" style="color: #170f85;text-decoration: underline;">share</a> with your friends
 	</div>
 	<script>
-
-				$(window).load(function() {
-					if (!localStorage.getItem("seenDis")) {
-						localStorage.setItem("seenDis", "False");
-					} 
-					$("#share").click(function(){
+$("#share").click(function(){
 						if (navigator.share) {
 							navigator.share({
 								title: 'Amigos || VinnovateIT ',
@@ -509,6 +504,11 @@ Amigos</div>
 								.catch((error) => console.log('Error sharing', error));
 							}
 					})
+				$(window).load(function() {
+					if (!localStorage.getItem("seenDis")) {
+						localStorage.setItem("seenDis", "False");
+					} 
+					
 				});
 				function showDis() {
 					
